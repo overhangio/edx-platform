@@ -134,7 +134,8 @@ class SAMLAuthBackend(SAMLAuth):  # pylint: disable=abstract-method
         Override of SAMLAuth.disconnect to unlink the learner from enterprise customer if associated.
         """
         from openedx.features.enterprise_support.api import unlink_enterprise_user_from_idp
-        unlink_enterprise_user_from_idp(self.strategy.request, self.name)
+        user = kwargs.get('user', None)
+        unlink_enterprise_user_from_idp(self.strategy.request, user, self.name)
         return super(SAMLAuthBackend, self).disconnect(*args, **kwargs)
 
     def _check_entitlements(self, idp, attributes):

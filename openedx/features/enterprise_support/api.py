@@ -672,19 +672,19 @@ def insert_enterprise_pipeline_elements(pipeline):
 
 
 @enterprise_is_enabled()
-def unlink_enterprise_user_from_idp(request, idp_backend_name):
+def unlink_enterprise_user_from_idp(request, user, idp_backend_name):
     """
     Un-links learner from their enterprise identity provider
     Args:
         request (wsgi request): request object
+        user (User): user who initiated disconnect request
         idp_backend_name (str): Name of identity provider's backend
 
     Returns: None
 
     """
-    user = request.user
     enterprise_customer = enterprise_customer_for_request(request)
-    if enterprise_customer:
+    if user and enterprise_customer:
         enabled_providers = Registry.get_enabled_by_backend_name(idp_backend_name)
         provider_ids = [enabled_provider.provider_id for enabled_provider in enabled_providers]
         enterprise_customer_idps = EnterpriseCustomerIdentityProvider.objects.filter(
@@ -701,4 +701,3 @@ def unlink_enterprise_user_from_idp(request, idp_backend_name):
                     )
             except (EnterpriseCustomerUser.DoesNotExist, PendingEnterpriseCustomerUser.DoesNotExist):
                 pass
-
