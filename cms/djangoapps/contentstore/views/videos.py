@@ -10,7 +10,6 @@ from pytz import UTC
 from uuid import uuid4
 
 import rfc6266_parser
-from boto import s3
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.staticfiles.storage import staticfiles_storage
@@ -35,6 +34,7 @@ from edxval.api import (
     get_available_transcript_languages
 )
 from opaque_keys.edx.keys import CourseKey
+from storages.backends.s3boto import S3BotoStorage, S3Key
 from xmodule.video_module.transcripts_utils import Transcript
 
 from contentstore.models import VideoUploadConfig
@@ -762,15 +762,18 @@ def storage_service_bucket():
     """
     Returns an S3 bucket for video uploads.
     """
-    conn = s3.connection.S3Connection(
-        settings.AWS_ACCESS_KEY_ID,
-        settings.AWS_SECRET_ACCESS_KEY
-    )
     # We don't need to validate our bucket, it requires a very permissive IAM permission
     # set since behind the scenes it fires a HEAD request that is equivalent to get_all_keys()
     # meaning it would need ListObjects on the whole bucket, not just the path used in each
     # environment (since we share a single bucket for multiple deployments in some configurations)
-    return conn.get_bucket(settings.VIDEO_UPLOAD_PIPELINE["BUCKET"], validate=False)
+    return s3_connection().get_bucket(settings.VIDEO_UPLOAD_PIPELINE["BUCKET"], validate=False)
+
+
+def s3_connection():
+    """
+    Returns a properly authenticated connection object to S3.
+    """
+    return S3BotoStorage().connection
 
 
 def storage_service_key(bucket, file_name):
@@ -781,7 +784,7 @@ def storage_service_key(bucket, file_name):
         settings.VIDEO_UPLOAD_PIPELINE.get("ROOT_PATH", ""),
         file_name
     )
-    return s3.key.Key(bucket, key_name)
+    return S3Key(bucket, key_name)
 
 
 def send_video_status_update(updates):
