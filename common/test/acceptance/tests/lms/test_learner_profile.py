@@ -493,7 +493,7 @@ class OwnLearnerProfilePageTest(LearnerProfileTestMixin, AcceptanceTest):
         profile_page.upload_file(filename='generic_csv.csv')
         self.assertEqual(
             profile_page.profile_image_message,
-            "The file must be one of the following types: .gif, .png, .jpeg, .jpg."
+            "The file must be one of the following types: .gif, .jpeg, .jpg, .png."
         )
         profile_page.visit()
         self.assertTrue(profile_page.profile_has_default_image)

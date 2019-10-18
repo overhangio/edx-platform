@@ -227,7 +227,7 @@ def _get_valid_file_types():
     """
     Return comma separated string of valid file types.
     """
-    return ', '.join([', '.join(IMAGE_TYPES[ft].extensions) for ft in IMAGE_TYPES.keys()])
+    return ', '.join(sorted([', '.join(IMAGE_TYPES[ft].extensions) for ft in IMAGE_TYPES.keys()]))
 
 
 def _user_friendly_size(size):
