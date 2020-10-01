@@ -330,6 +330,7 @@ FEATURES = {
     'SHOW_FOOTER_LANGUAGE_SELECTOR': False,
     'ENABLE_ENROLLMENT_RESET': False,
     'DISABLE_MOBILE_COURSE_AVAILABLE': False,
+    'ENABLE_LEARNER_RECORDS': True,
 
     # .. toggle_name: ENABLE_CHANGE_USER_PASSWORD_ADMIN
     # .. toggle_implementation: DjangoSetting

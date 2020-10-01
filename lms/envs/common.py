@@ -435,6 +435,17 @@ FEATURES = {
     # .. toggle_warnings: Also set settings.LEARNING_MICROFRONTEND_URL and see REDIRECT_TO_COURSEWARE_MICROFRONTEND for rollout.
     'ENABLE_COURSEWARE_MICROFRONTEND': False,
 
+    # .. toggle_name: ENABLE_LEARNER_RECORDS
+    # .. toggle_implementation: DjangoSetting
+    # .. toggle_default: True
+    # .. toggle_description: Enable learner records for the whole platform. This setting maybe overridden by site- and
+    #   org-specific site configurations with the same name.
+    # .. toggle_warnings: Enabling this feature requires that the definition of the ``CREDENTIALS_PUBLIC_SERVICE_URL``
+    #   setting.
+    # .. toggle_use_cases: open_edx
+    # .. toggle_creation_date: 2020-10-01
+    'ENABLE_LEARNER_RECORDS': True,
+
     ### ORA Feature Flags ###
 
     # .. toggle_name: ENABLE_ORA_TEAM_SUBMISSIONS
